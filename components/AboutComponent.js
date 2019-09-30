@@ -14,9 +14,9 @@ const mapStateToProps = state => {
 
 class About extends Component {
 
-    About.navigationOptions = {
-        title: 'About Us',
-    };
+    static navigationOptions = {
+        title: 'About Us'
+        };
 
     render() {
         const { params } = this.props.navigation.state;
@@ -84,12 +84,4 @@ Our Address</Text>
     )
 }; 
 
-export default connect(mapStatetoProps)(About); 
-
-
-/* const myComponent () => {};
-
-myComponent.navigationOptions={
-    title: 'mycomponent'
-};
-*/
+export default connect(mapStateToProps)(About); 

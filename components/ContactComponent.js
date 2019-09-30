@@ -5,13 +5,13 @@ import { ScrollView } from 'react-native';
 const ContactComponent = () => {
     return(
         <ScrollView>
-          <Card title="Contact Information" style={{ width: '18rem', margin: 10 }}>
-              <Text> 121, Clear Water Bay Road </Text>
-              <Text>Clear Water Bay, Kowloon </Text>
-              <Text> HONG KONG </Text>
-              <Text>Tel: +852 1234 5678 </Text>
-              <Text>Fax: +852 87654321 </Text>
-              <Text>Email:confusion@food.net</Text>
+          <Card title="Contact Information" style={{ width: '18rem' }}>
+              <Text style={{ margin: 10 }}> 121, Clear Water Bay Road </Text>
+              <Text style={{ margin: 10 }}>Clear Water Bay, Kowloon </Text>
+              <Text style={{ margin: 10 }}> HONG KONG </Text>
+              <Text style={{ margin: 10 }}>Tel: +852 1234 5678 </Text>
+              <Text style={{ margin: 10 }}>Fax: +852 87654321 </Text>
+              <Text style={{ margin: 10 }}>Email:confusion@food.net</Text>
         </Card>
       </ScrollView>
     )
