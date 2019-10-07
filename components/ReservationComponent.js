@@ -10,6 +10,7 @@ import { Text,
     Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
+import { Permissions, Notifications } from 'expo';
 
 class Reservation extends Component {
     
@@ -37,13 +38,16 @@ class Reservation extends Component {
             [
                 {
                     text: 'Cancel',
-                    onPress: () => {console.log('Cancel Pressed'); this.resetForm()},
+                    onPress: () => {console.log('Cancel Pressed'); 
+                    this.resetForm()},
                     style: 'cancel'
                     
                 },
                 {
                     text: 'OK',
-                    onPress: () => {console.log('OK Pressed'); this.resetForm()}
+                    onPress: () => {console.log('OK Pressed'); 
+                    this.presentLocalNotification(this.state.date);
+                    this.resetForm()}
                     
                 },
             ],
@@ -56,6 +60,33 @@ class Reservation extends Component {
             guests: 1, 
             smoking: false, 
             date: ''
+        });
+    }
+
+    async obtainNotificationPermisson() {
+        let permisson = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS)
+        if ( Permissions.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            if(permisson.status !== 'granted') {
+                Alert.alert('Permisson not granted to show notifications');
+            }
+        }
+        return permisson; 
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermisson();
+        Notifications.presentLocalNotificationAsync({
+            title: 'Your Reservation',
+            body: 'Reservation for ' + date + ' requested', 
+            ios: {
+                sound: true
+            }, 
+            android: {
+                sound: true, 
+                vibrate: true, 
+                color: "#512DA8"
+            }
         });
     }
 
