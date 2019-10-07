@@ -98,6 +98,13 @@ function RenderDish(props) {
       return false; 
   };
 
+  const recognizeComment = ({ moveX, moveY, dx, dy}) => {
+    if ( dx > 200 )
+      return true; 
+    else 
+      return false;
+  }
+
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (e, gestureState) => {
       return true;
@@ -121,10 +128,12 @@ function RenderDish(props) {
               {
                   text: 'OK',
                   onPress: () =>  props.favorite ? console.log('Already favorite') : props.onPress()
-              }
+              },
             ],
             { cancelable: false}
-        )
+        );
+      else if (recognizeComment(gestureState))
+            props.onShowModal();
       return true;
     }
   });

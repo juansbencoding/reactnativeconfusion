@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
+  "packagerPort": 19001,
+  "packagerPid": 42033,
   "expoServerNgrokUrl": "https://te-sug.anonymous.confusion.exp.direct",
   "packagerNgrokUrl": "https://packager.te-sug.anonymous.confusion.exp.direct",
-  "ngrokPid": 35987
+  "ngrokPid": 42069
 }

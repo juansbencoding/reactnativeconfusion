@@ -50,8 +50,7 @@ const MenuNavigator = createStackNavigator({
 });
 
 const HomeNavigator = createStackNavigator({
-    Home: { screen: Home }, 
-    DishDetail: { screen: DishDetail }
+    Home: { screen: Home }
 }, { 
     navigationOptions: ({ navigation }) => ({
         headerStyle: {
@@ -234,8 +233,7 @@ const MainNavigator = createDrawerNavigator({
                     />
             )
         }
-    }
-}, {
+    },
     Reservation: {
         screen: ReservationNavigator,
         navigationOptions: {
