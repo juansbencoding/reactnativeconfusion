@@ -10,7 +10,10 @@ import { Text,
     Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import * as Calendar from 'expo-calendar';
+
 
 class Reservation extends Component {
     
@@ -27,6 +30,33 @@ class Reservation extends Component {
     static navigationOptions = {
         title: 'Reserve Table'
     }
+
+    obtainCalendarPermission = async () => {
+        const calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+
+        if(calendarPermission === 'granted'){
+            let event = await Calendar.createCalendarAsync(details);
+        }
+    }
+
+
+    async addReservationToCalendar(date) {
+        let startDate = new Date(date);
+        let endDate = new Date(date).setHours(startDate.getHours(date) + 2)
+        // let calendar = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+        // console.log(calendar);
+        let newEvent = {
+            title: 'Con Fusion Table Reservation',
+            startDate: startDate,
+            endDate: endDate,
+            timeZone: 'Asia/Hong_Kong',
+            location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+        }
+        await this.obtainCalendarPermission();
+        Calendar.createEventAsync('1CFEAAAB-91F7-4BA5-877B-FB447CE06B97', newEvent);
+    }
+
+
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
@@ -47,7 +77,10 @@ class Reservation extends Component {
                     text: 'OK',
                     onPress: () => {console.log('OK Pressed'); 
                     this.presentLocalNotification(this.state.date);
-                    this.resetForm()}
+                    this.obtainCalendarPermission()
+                    this.addReservationToCalendar()
+                    this.resetForm()
+                    }
                     
                 },
             ],

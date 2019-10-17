@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, StylesSheet, Text, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { Icon, Input, CheckBox, Button } from 'react-native-elements';
-import { SecureStore, Permissions, ImagePicker, Asset, ImageManipulator } from 'expo';
+import * as SecureStore from 'expo-secure-store';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { createBottomTabNavigator } from 'react-navigation';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -130,30 +133,53 @@ class RegisterTab extends Component {
 
     getImageFromCamera = async () => {
         const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-        const cameraRollPermisson = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        if (cameraPermission.status === 'granted' && cameraRollPermisson.status === 'granted'){
+        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
             let capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
-                aspect: [4,3]
+                aspect: [4, 3],
             });
-
-            if(!capturedImage.canceled) {
-                this.processImage( capturedImage.uri )
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
             }
         }
+
     }
 
+    getImageFromGallery = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+              });
+
+              console.log(result);
+          
+              if (!result.cancelled) {
+                this.processImage(result.uri);
+              }
+            };
+          }
+
     processImage = async (imageUri) => {
-        let processedImage = await ImageManipulator.manipulate(
+        let processedImage = await ImageManipulator.manipulateAsync(
             imageUri, 
             [
-                { resize: { width: 400 }}
-            ], 
-            { format: 'png'} 
+                {resize: {width: 400}}
+            ],
+            {format: 'png'}
         );
-        this.setState({ imageUrl: processedImage.uri })
+        console.log(processedImage);
+        this.setState({imageUrl: processedImage.uri });
+
     }
+    
 
     static navigationOptions = {
         title: 'Register', 
@@ -180,15 +206,23 @@ class RegisterTab extends Component {
         return(
             <ScrollView>
                 <View style={styles.container}>
-                    <View style={styles.imageContainer}>
+                    <View style={styles.imageContainer}
+                        >
                         <Image
                             source= {{ uri: this.state.imageUrl }} 
                             loadingIndicatorSource={require('./images/logo.png')}
                             style={styles.image}
+                            
                             />
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}
+                            style={{justifyContent: 'space-around'}}
+                            />
+                        <Button
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
+                            style={{justifyContent: 'space-around'}}
                             />
                     </View>
                     <Input
@@ -265,7 +299,7 @@ const Login = createBottomTabNavigator({
     }
 })
 
-const styles = StylesSheet.create({
+const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         margin: 20

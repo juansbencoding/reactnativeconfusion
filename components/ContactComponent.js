@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { Component }from 'react';
 import { Card, Button, Icon } from 'react-native-elements';
-import { ScrollView } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { MailComposer } from 'expo';
+import * as MailComposer from 'expo-mail-composer';
 
-const ContactComponent = () => {
+const textStyle= {
+  margin: 10,
+};
 
+class ContactComponent extends Component {
+  static navigationOptions = {
+    title: 'Contact Us',
+  };
   sendMail() {
     MailComposer.composeAsync({
-      recipients: ['confusion@food.net'],
-      subject: 'Enquiry',
-      body: 'To whom it may concern:'
+        recipients: ['confusion@food.net'],
+        subject: 'Enquiry',
+        body: 'To whom it may concern:',
     });
-  }
-
+}
+  render() {
     return(
         <ScrollView>
           <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
@@ -26,18 +32,22 @@ const ContactComponent = () => {
                 <Text style={{ margin: 10 }}>Email:confusion@food.net</Text>
                 <Button
                     title='Send Email'
-                    buttonStyle={{ backgroundColor: '#512DA8'}}
-                    icon={<Icon name='envelope-o' type='font-awesome' color='white' />}
+                    buttonStyle={{ backgroundColor: '#512DA8' }}
+                    icon={
+                      <Icon 
+                        name='envelope-o' 
+                        type='font-awesome' 
+                        color='white' 
+                        containerStyle={{ marginHorizontal: 10 }}
+                      />
+                    }
                     onPress={this.sendMail} 
                   />
           </Card>
         </Animatable.View>
       </ScrollView>
-    )
-}; 
-
-ContactComponent.navigationOptions={
-    title: 'Contact'
-};
+    );
+  }
+}
 
 export default ContactComponent; 
